@@ -2,9 +2,9 @@ version: '3.6'
 
 services:
   # mongo service
-  chance-mongodb-local:
+  glove-mongodb-local:
     image: mongo:latest
-    container_name: chance-mongodb-local
+    container_name: glove-mongodb-local
     ports:
       - 27017:27017
     expose:
@@ -13,9 +13,10 @@ services:
       - mongo-data:/data/db
     networks:
       - mongo_net
-  chance-redis-local:
+  # redis service
+  glove-redis-local:
     image: 'redis:alpine'
-    container_name: chance-redis-local
+    container_name: glove-redis-local
     ports:
       - '6379:6379'
     expose:
