@@ -15,12 +15,16 @@ export const user = model<IUser>("User",
 			type: String,
 			required: true,
 			trim: true,
+			unique: true,
+			index: 1,
 			minlength: 3,
 			maxlength: 25
 		},
 		email: {
 			type: String,
 			required: true,
+			unique: true,
+			index: 1,
 			trim: true
 		},
 		password: {
@@ -31,7 +35,7 @@ export const user = model<IUser>("User",
 		auth: {
 			type: String,
 			ref: "Auth",
-			required: true
+			required: false
 		},
-	}).index({ username: 1, email: 1 }, { unique: true })
+	})
 );
