@@ -29,8 +29,7 @@ export const user = model<IUser>("User",
 		},
 		password: {
 			type: String,
-			required: true,
-			select: false
+			required: true
 		},
 		auth: {
 			type: String,

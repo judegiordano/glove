@@ -1,5 +1,5 @@
-import mongoose, { Schema as BaseSchema, SchemaDefinition, SchemaOptions, connect, model as BaseModel } from "mongoose";
 import { customAlphabet } from "nanoid";
+import mongoose, { Schema as BaseSchema, SchemaDefinition, SchemaOptions, connect, model as BaseModel } from "mongoose";
 
 import { config } from "./config";
 

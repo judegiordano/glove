@@ -4,4 +4,5 @@ export { faceApi } from "./rest";
 export { sign, verify } from "./jwt";
 export { createConnection, closeConnection, IModel, Schema, model } from "./mongoose";
 export * as redis from "./redis";
-export { hash, compare } from "./password";
+export * as password from "./password";
+export * as cookie from "./cookie";

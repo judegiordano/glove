@@ -1,8 +1,6 @@
 import { FastifyInstance } from "fastify";
 
-import { user, auth } from "../../models";
-import { NotFoundError } from "../../types";
-import { hash } from "../../services";
+import { userService } from "../../lib";
 
 export const userRouter = async function (app: FastifyInstance) {
 	app.post<{
@@ -26,41 +24,45 @@ export const userRouter = async function (app: FastifyInstance) {
 				200: { $ref: "user#" }
 			}
 		}
-	}, async (req) => {
-		const { username, email, password } = req.body;
-		const registration = new user({
-			username,
-			email,
-			password: await hash(password),
-			auth
-		});
-		await registration.save();
-		const credentials = await new auth().save();
-		registration.auth = credentials._id;
-		return registration.save();
+	}, async (req, res) => {
+		const registration = await userService.register(res, req.body);
+		return registration;
 	});
-	app.get<{
-		Params: {
-			id: number
+	app.post<{
+		Body: {
+			username: string
+			password: string
 		}
-	}>("user/:id", {
-		preValidation: [app.cache],
+	}>("user/login", {
 		schema: {
-			params: {
+			body: {
 				type: "object",
-				required: ["id"],
+				required: ["username", "password"],
 				properties: {
-					id: { type: "string" }
+					username: { type: "string", minLength: 1 },
+					password: { type: "string", minLength: 1 }
 				}
 			},
 			response: {
 				200: { $ref: "user#" }
 			}
 		}
+	}, async (req, res) => {
+		const login = await userService.login(res, req.body);
+		return login;
+	});
+	app.get<{
+		Params: {
+			id: number
+		}
+	}>("user/me", {
+		preValidation: [userService.authenticate],
+		schema: {
+			response: {
+				200: { $ref: "user#" }
+			}
+		}
 	}, async (req) => {
-		const { id } = req.params;
-		const exists = await user.findById(id, null, { lean: true });
-		if (!exists) throw new NotFoundError();
-		return exists;
+		return req.user;
 	});
 };

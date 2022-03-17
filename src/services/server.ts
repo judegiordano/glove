@@ -2,7 +2,7 @@ import Fastify, { FastifyError, FastifyRequest, FastifyReply } from "fastify";
 import helmet from "fastify-helmet";
 
 import { schemas } from "../middleware";
-import { authenticate, cache } from "../decorators";
+import { cache } from "../decorators";
 import { CommonError } from "../types";
 import { onSend } from "../hooks";
 
@@ -15,7 +15,6 @@ export const app = Fastify({
 	onProtoPoisoning: "error",
 	onConstructorPoisoning: "error"
 });
-app.decorate("authenticate", authenticate);
 app.decorate("cache", cache);
 app.addHook("onSend", onSend);
 app.register(schemas);
